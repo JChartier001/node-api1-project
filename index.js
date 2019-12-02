@@ -4,6 +4,7 @@ const express = require('express');
 const server = express();
 
 server.use(express.json());
+server.use(cors());
 const db = require('./data/db.js')
 
 server.get('/', (req, res) => {
