@@ -41,12 +41,16 @@ server.get('/users', (req, res) => {
 server.get('/users/:id', (req, res) => {
     const id = req.params.id
     db.findById(id)
+    
     .then(user => {
+        if(user.id === null){
+            res.status(500).json({message: "The user with the specified ID does not exist."});
+        }else
         res.status(200).json(user);
     })
     .catch(error => {
         console.log("error on GET /hubs", error)
-        res.status(404).json({message: "error getting users from database"});
+        res.status(404).json({message: "The users information could not be retrieved."});
     });
 });
 
