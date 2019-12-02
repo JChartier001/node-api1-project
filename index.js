@@ -44,15 +44,31 @@ server.get('/users/:id', (req, res) => {
     
     .then(user => {
         if(user.id === null){
-            res.status(500).json({message: "The user with the specified ID does not exist."});
+            res.status(404).json({message: "The user with the specified ID does not exist."});
         }else
         res.status(200).json(user);
     })
     .catch(error => {
-        console.log("error on GET /hubs", error)
-        res.status(404).json({message: "The users information could not be retrieved."});
+        console.log("error on GET /users/:id", error)
+        res.status(500).json({message: "The users information could not be retrieved."});
     });
 });
+
+
+server.delete('/users/:id', (req, res) => {
+    const id = req.params.id
+    db.remove(id)
+    .then(user => {
+        if(user.id === null){
+            res.status(404).json({message: "The user with the specified ID does not exist."});
+        }else
+        res.status(200).json({message: "user has been deleted"},user);
+    })
+    .catch(error => {
+        console.log("error on DELETE", error);
+        res.status(500).json({message: "The user could not be removed"})
+    })
+})
 
 
 const port = 4000;
